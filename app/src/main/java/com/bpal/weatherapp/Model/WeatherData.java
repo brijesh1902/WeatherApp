@@ -1,4 +1,4 @@
-package com.bpal.weatherapp;
+package com.bpal.weatherapp.Model;
 
 import org.json.JSONObject;
 
@@ -36,35 +36,23 @@ public class WeatherData {
     }
 
     private static String updateIcon(int condition) {
-        if (condition>=0 && condition<=300) {
+        if (condition>=200 && condition<=299) {
             return "thunderstorm";
         }
-        else if (condition>=300 && condition<=500) {
+        else if (condition>=300 && condition<=599) {
             return "rain";
         }
-        else if (condition>=500 && condition<=600) {
-            return "rain";
-        }
-        else if (condition>=600 && condition<=700) {
+        else if (condition>=600 && condition<=699) {
             return "snow";
         }
-        else if (condition>=700 && condition<=800) {
+        else if (condition>=700 && condition<=799) {
+            return "mist";
+        }
+        else if (condition>=800 && condition<=804) {
             return "cloud";
         }
-        else if (condition>=801 && condition<=804) {
-            return "cloud";
-        }
-        else if (condition>=900 && condition<=902) {
-            return "thunderstorm";
-        }
-        else if (condition==903) {
-            return "snow";
-        }
-        else if (condition==904) {
+        else if (condition==800) {
             return "sun";
-        }
-        else if (condition>=905 && condition<=1000) {
-            return "thunderstorm";
         }
         return "sun";
     }

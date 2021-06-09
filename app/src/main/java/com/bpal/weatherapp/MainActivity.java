@@ -7,35 +7,31 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bpal.weatherapp.Model.WeatherData;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
-    private static String IMG_URL = "http://openweathermap.org/img/w/";
     private static String APPID = "17a737f9050113b36749fbd48a140635";
 
     TextView condition, city, temperature, humidity, pressure, day1, day2, day3;
@@ -67,6 +63,17 @@ public class MainActivity extends AppCompatActivity {
         day3.setText(getDay("EEEE", +3));
 
         getCurrentLocation();
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                RequestParams params = new RequestParams();
+                params.put("lat", latitude);
+                params.put("lon", longitude);
+                params.put("appid", APPID);
+                getWeather(params);
+
+            }
+        }, 5000);
 
     }
 
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
     private void getWeather(RequestParams params) {
